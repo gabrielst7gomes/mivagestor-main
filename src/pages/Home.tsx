@@ -9,6 +9,7 @@ import { ThiingIcon } from "@/components/ThiingIcon";
 import { useCategorias } from "@/hooks/useCategorias";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 interface Conta {
   id: string;
@@ -61,7 +62,7 @@ export default function Home() {
   const totalAPagar = pendentes.reduce((a, c) => a + Number(c.valor), 0);
   const saldo = totalReceitas - totalPagas;
   const progresso = contas.length > 0 ? (pagas.length / contas.length) * 100 : 0;
-  const proximas = pendentes.slice(0, 3);
+  const proximas = pendentes.slice(0, 6);
   const proximoVenc = pendentes[0];
 
   const darBaixa = async (id: string) => {
@@ -79,116 +80,120 @@ export default function Home() {
 
   return (
     <AppShell>
-      <div className="px-5 pt-8 pb-6 animate-fade-in">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6 gap-3">
-          <div className="min-w-0 flex-1">
-            <p className="text-sm text-muted-foreground">{saudacao()},</p>
-            <h1 className="font-serif text-2xl text-foreground capitalize truncate">{displayName} ✨</h1>
+      <div className="px-5 pt-8 pb-6 animate-fade-in md:grid md:grid-cols-[1fr_360px] lg:grid-cols-[1fr_400px] md:gap-6 md:items-start">
+        <div className="md:min-w-0">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6 gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="text-sm text-muted-foreground">{saudacao()},</p>
+              <h1 className="font-serif text-2xl text-foreground capitalize truncate">{displayName} ✨</h1>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <button aria-label="Notificações" className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
+                <Bell size={18} />
+              </button>
+              <Link
+                to="/perfil"
+                aria-label="Ir para perfil"
+                className="w-10 h-10 rounded-full overflow-hidden bg-primary-soft text-primary flex items-center justify-center font-serif font-semibold border border-primary/20"
+              >
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <span>{initials}</span>
+                )}
+              </Link>
+            </div>
           </div>
-          <div className="flex items-center gap-3 shrink-0">
-            <button aria-label="Notificações" className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary transition-colors">
-              <Bell size={18} />
-            </button>
-            <Link
-              to="/perfil"
-              aria-label="Ir para perfil"
-              className="w-10 h-10 rounded-full overflow-hidden bg-primary-soft text-primary flex items-center justify-center font-serif font-semibold border border-primary/20"
-            >
-              {avatarUrl ? (
-                <img src={avatarUrl} alt="" className="w-full h-full object-cover" />
+
+          {/* Cartão saldo — liquid glass + cofrinho 3D */}
+          <div className="card-hero mb-5 animate-scale-in">
+            {/* Cofrinho decorativo no canto */}
+            <ThiingIcon name="piggy" size="lg" float className="absolute -top-4 -right-2 z-10" />
+
+            <p className="text-muted-foreground text-xs uppercase tracking-wider mb-1 relative">Saldo disponível em</p>
+            <p className="text-foreground/70 text-sm capitalize mb-3 relative">{mesAtual()}</p>
+            <p className="font-serif text-4xl font-semibold text-rose-shimmer relative">{formatBRL(saldo)}</p>
+
+            <div className="grid grid-cols-3 gap-2 mt-6 pt-5 border-t border-white/60 relative">
+              <Mini icon={<TrendingUp size={14} />} label="Receitas" value={formatBRL(totalReceitas)} tone="success" />
+              <Mini icon={<TrendingDown size={14} />} label="Pagas" value={formatBRL(totalPagas)} tone="rose" />
+              <Mini icon={<Hourglass size={14} />} label="A pagar" value={formatBRL(totalAPagar)} tone="rose-deep" />
+            </div>
+          </div>
+
+          {/* Grid resumo 2x2 */}
+          <div className="grid grid-cols-2 gap-3 mb-6 md:mb-0">
+            <div className="card-soft">
+              <p className="text-xs text-muted-foreground mb-1">Contas pagas</p>
+              <p className="font-serif text-2xl text-foreground">{pagas.length}<span className="text-base text-muted-foreground"> de {contas.length}</span></p>
+              <Progress value={progresso} className="mt-3 h-1.5" />
+            </div>
+            <div className="card-soft">
+              <p className="text-xs text-muted-foreground mb-1">Próximo vencimento</p>
+              {proximoVenc ? (
+                <>
+                  <p className="font-serif text-base text-foreground line-clamp-1">{proximoVenc.descricao}</p>
+                  <p className="text-xs text-primary mt-1">{formatDataLonga(proximoVenc.data_vencimento)}</p>
+                </>
               ) : (
-                <span>{initials}</span>
+                <p className="text-sm text-muted-foreground mt-2">Tudo em dia 💕</p>
               )}
+            </div>
+            <div className="card-soft">
+              <p className="text-xs text-muted-foreground mb-1">Salário</p>
+              <p className="font-serif text-xl text-success">{formatBRL(totalSalario)}</p>
+            </div>
+            <div className="card-soft">
+              <p className="text-xs text-muted-foreground mb-1">Renda extra</p>
+              <p className="font-serif text-xl text-primary-deep">{formatBRL(totalExtra)}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 md:mt-0">
+          {/* Próximas contas */}
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-serif text-xl text-foreground">Próximas contas</h2>
+            <Link to="/contas" className="text-xs text-primary flex items-center gap-1 font-medium">
+              Ver todas <ChevronRight size={14} />
             </Link>
           </div>
-        </div>
 
-        {/* Cartão saldo — liquid glass + cofrinho 3D */}
-        <div className="card-hero mb-5 animate-scale-in">
-          {/* Cofrinho decorativo no canto */}
-          <ThiingIcon name="piggy" size="lg" float className="absolute -top-4 -right-2 z-10" />
-
-          <p className="text-muted-foreground text-xs uppercase tracking-wider mb-1 relative">Saldo disponível em</p>
-          <p className="text-foreground/70 text-sm capitalize mb-3 relative">{mesAtual()}</p>
-          <p className="font-serif text-4xl font-semibold text-rose-shimmer relative">{formatBRL(saldo)}</p>
-
-          <div className="grid grid-cols-3 gap-2 mt-6 pt-5 border-t border-white/60 relative">
-            <Mini icon={<TrendingUp size={14} />} label="Receitas" value={formatBRL(totalReceitas)} tone="success" />
-            <Mini icon={<TrendingDown size={14} />} label="Pagas" value={formatBRL(totalPagas)} tone="rose" />
-            <Mini icon={<Hourglass size={14} />} label="A pagar" value={formatBRL(totalAPagar)} tone="rose-deep" />
-          </div>
-        </div>
-
-        {/* Grid resumo 2x2 */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <div className="card-soft">
-            <p className="text-xs text-muted-foreground mb-1">Contas pagas</p>
-            <p className="font-serif text-2xl text-foreground">{pagas.length}<span className="text-base text-muted-foreground"> de {contas.length}</span></p>
-            <Progress value={progresso} className="mt-3 h-1.5" />
-          </div>
-          <div className="card-soft">
-            <p className="text-xs text-muted-foreground mb-1">Próximo vencimento</p>
-            {proximoVenc ? (
-              <>
-                <p className="font-serif text-base text-foreground line-clamp-1">{proximoVenc.descricao}</p>
-                <p className="text-xs text-primary mt-1">{formatDataLonga(proximoVenc.data_vencimento)}</p>
-              </>
+          <div className="space-y-2">
+            {loading ? (
+              <p className="text-sm text-muted-foreground text-center py-6">Carregando…</p>
+            ) : proximas.length === 0 ? (
+              <div className="card-soft text-center py-8 flex flex-col items-center">
+                <ThiingIcon name="flower" size="lg" float />
+                <p className="text-sm text-foreground font-medium mt-3">Tudo em dia este mês</p>
+                <p className="text-xs text-muted-foreground mt-1">Nada para se preocupar agora 💕</p>
+              </div>
             ) : (
-              <p className="text-sm text-muted-foreground mt-2">Tudo em dia 💕</p>
+              proximas.map((c, i) => {
+                const cat = findByNome(c.categoria);
+                return (
+                  <div key={c.id} className={cn("card-soft items-center gap-3", i < 3 ? "flex" : "hidden md:flex")}>
+                    <ThiingIcon name={cat?.thiing ?? "coins"} size="sm" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-foreground line-clamp-1">{c.descricao}</p>
+                      <p className="text-xs text-muted-foreground">Vence {formatDataLonga(c.data_vencimento)}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-foreground">{formatBRL(Number(c.valor))}</p>
+                    </div>
+                    <button
+                      onClick={() => darBaixa(c.id)}
+                      aria-label="Dar baixa"
+                      className="w-9 h-9 rounded-full border-2 border-border hover:border-success hover:bg-success/10 flex items-center justify-center text-muted-foreground hover:text-success transition-all"
+                    >
+                      <span className="text-lg leading-none">–</span>
+                    </button>
+                  </div>
+                );
+              })
             )}
           </div>
-          <div className="card-soft">
-            <p className="text-xs text-muted-foreground mb-1">Salário</p>
-            <p className="font-serif text-xl text-success">{formatBRL(totalSalario)}</p>
-          </div>
-          <div className="card-soft">
-            <p className="text-xs text-muted-foreground mb-1">Renda extra</p>
-            <p className="font-serif text-xl text-primary-deep">{formatBRL(totalExtra)}</p>
-          </div>
-        </div>
-
-        {/* Próximas contas */}
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="font-serif text-xl text-foreground">Próximas contas</h2>
-          <Link to="/contas" className="text-xs text-primary flex items-center gap-1 font-medium">
-            Ver todas <ChevronRight size={14} />
-          </Link>
-        </div>
-
-        <div className="space-y-2">
-          {loading ? (
-            <p className="text-sm text-muted-foreground text-center py-6">Carregando…</p>
-          ) : proximas.length === 0 ? (
-            <div className="card-soft text-center py-8 flex flex-col items-center">
-              <ThiingIcon name="flower" size="lg" float />
-              <p className="text-sm text-foreground font-medium mt-3">Tudo em dia este mês</p>
-              <p className="text-xs text-muted-foreground mt-1">Nada para se preocupar agora 💕</p>
-            </div>
-          ) : (
-            proximas.map((c) => {
-              const cat = findByNome(c.categoria);
-              return (
-                <div key={c.id} className="card-soft flex items-center gap-3">
-                  <ThiingIcon name={cat?.thiing ?? "coins"} size="sm" />
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-foreground line-clamp-1">{c.descricao}</p>
-                    <p className="text-xs text-muted-foreground">Vence {formatDataLonga(c.data_vencimento)}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-semibold text-foreground">{formatBRL(Number(c.valor))}</p>
-                  </div>
-                  <button
-                    onClick={() => darBaixa(c.id)}
-                    aria-label="Dar baixa"
-                    className="w-9 h-9 rounded-full border-2 border-border hover:border-success hover:bg-success/10 flex items-center justify-center text-muted-foreground hover:text-success transition-all"
-                  >
-                    <span className="text-lg leading-none">–</span>
-                  </button>
-                </div>
-              );
-            })
-          )}
         </div>
       </div>
     </AppShell>

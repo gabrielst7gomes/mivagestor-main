@@ -1,21 +1,11 @@
-import { Home, ListChecks, Wallet, PiggyBank, CalendarHeart, User } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
-
-const tabs = [
-  { to: "/", label: "Início", icon: Home, end: true },
-  { to: "/contas", label: "Contas", icon: ListChecks },
-  { to: "/receitas", label: "Receitas", icon: Wallet },
-  { to: "/investimentos", label: "Guardado", icon: PiggyBank },
-  { to: "/agenda", label: "Agenda", icon: CalendarHeart },
-  { to: "/perfil", label: "Perfil", icon: User },
-];
-
+import { tabs } from "./nav-items";
 
 export function BottomNav() {
   return (
     <nav
-      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full md:max-w-[640px] lg:max-w-[720px] safe-bottom z-40 border-t border-white/60"
+      className="md:hidden fixed bottom-0 left-1/2 -translate-x-1/2 w-full safe-bottom z-40 border-t border-white/60"
       style={{
         bottom: "env(safe-area-inset-bottom, 0px)",
         background: "linear-gradient(180deg, hsl(0 0% 100% / 0.7), hsl(339 70% 97% / 0.85))",

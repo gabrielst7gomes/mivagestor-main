@@ -104,6 +104,8 @@
     --ring: 339 58% 65%;
     --hero-bg: 340 18% 14%;
     --hero-foreground: 340 60% 99%;
+
+    --gradient-soft: linear-gradient(180deg, hsl(340 18% 10%), hsl(340 18% 14%));
   }
 
   /* === TEMA MASCULINO — azul petróleo + grafite, mais sóbrio e organizado === */
@@ -200,6 +202,22 @@
     @apply mx-auto w-full md:max-w-[640px] lg:max-w-[720px] min-h-screen relative;
     min-height: var(--app-height);
     padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  /* Shell autenticado: barra lateral fixa + coluna de conteúdo no desktop,
+     empilhado (com bottom nav) no celular. */
+  .app-shell {
+    @apply relative min-h-screen md:flex md:items-start;
+    min-height: var(--app-height);
+  }
+
+  .app-shell-main {
+    @apply mx-auto w-full md:mx-0 md:flex-1 md:min-w-0;
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .app-shell-inner {
+    @apply w-full md:max-w-[900px] lg:max-w-[1100px] xl:max-w-[1400px] md:mx-auto;
   }
 
   /* === LIQUID GLASS === */
