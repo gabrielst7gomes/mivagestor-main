@@ -1,0 +1,487 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Miva — Design System
+   Cuidado · Clareza · Controle suave
+   Paleta: BRANCO + ROSÉ. TODAS as cores em HSL.
+   Visual: Liquid Glass (vidro fosco translúcido)
+*/
+
+@layer base {
+  :root {
+    /* === Backgrounds (branco / off-white quentinho) === */
+    --background: 340 60% 99%;           /* off-white com sopro rosé */
+    --foreground: 340 18% 18%;           /* texto vinho escuro suave */
+
+    --card: 0 0% 100%;
+    --card-foreground: 340 18% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 18% 18%;
+
+    /* === Miva Rosé (Primária) === */
+    --primary: 339 58% 58%;              /* #D4537E */
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 339 70% 95%;         /* rosé suave */
+    --primary-glow: 339 75% 78%;
+    --primary-deep: 339 60% 42%;         /* rosé profundo p/ texto */
+
+    /* === Cartão hero (saldo) — versão clara só rosé === */
+    --hero-bg: 339 60% 97%;
+    --hero-foreground: 340 18% 18%;
+
+    /* === Secondary / Muted === */
+    --secondary: 339 70% 95%;
+    --secondary-foreground: 339 58% 40%;
+
+    --muted: 340 30% 96%;
+    --muted-foreground: 340 10% 48%;
+
+    --accent: 339 70% 95%;
+    --accent-foreground: 339 60% 40%;
+
+    /* === Verde sutil para sucesso === */
+    --success: 80 50% 42%;
+    --success-foreground: 0 0% 100%;
+    --success-soft: 80 40% 92%;
+
+    /* === Estados === */
+    --warning: 35 90% 55%;
+    --warning-foreground: 0 0% 100%;
+
+    --destructive: 2 62% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --destructive-soft: 2 60% 95%;
+
+    --info: 211 14% 48%;
+
+    /* === Borders === */
+    --border: 340 30% 92%;
+    --input: 340 30% 92%;
+    --ring: 339 58% 58%;
+
+    --radius: 1rem;
+
+    /* === Gradientes só rosé/branco === */
+    --gradient-rose: linear-gradient(135deg, hsl(339 58% 58%), hsl(339 70% 70%));
+    --gradient-rose-soft: linear-gradient(135deg, hsl(339 70% 92%), hsl(339 80% 97%));
+    --gradient-soft: linear-gradient(180deg, hsl(340 60% 99%), hsl(339 70% 96%));
+    --gradient-hero: linear-gradient(160deg, hsl(0 0% 100%) 0%, hsl(339 70% 96%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.65), hsl(339 70% 97% / 0.45));
+
+    /* === Sombras suaves === */
+    --shadow-card: 0 2px 12px -4px hsl(339 30% 60% / 0.08);
+    --shadow-sheet: 0 -8px 32px -4px hsl(340 20% 40% / 0.15);
+    --shadow-rose: 0 8px 24px -8px hsl(339 58% 58% / 0.45);
+    --shadow-hero: 0 12px 40px -16px hsl(339 40% 60% / 0.25);
+    --shadow-glass: 0 8px 32px -8px hsl(339 40% 50% / 0.18), inset 0 1px 0 hsl(0 0% 100% / 0.6);
+
+    --transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --app-height: 100vh;
+
+    /* Cor da sombra dos ícones 3D (rosé no tema feminino) */
+    --thiing-shadow-color: 339 58% 58%;
+  }
+
+  .dark {
+    --background: 340 18% 10%;
+    --foreground: 340 60% 99%;
+    --card: 340 18% 14%;
+    --card-foreground: 340 60% 99%;
+    --popover: 340 18% 14%;
+    --popover-foreground: 340 60% 99%;
+    --primary: 339 58% 65%;
+    --primary-foreground: 340 18% 10%;
+    --secondary: 340 18% 18%;
+    --secondary-foreground: 340 60% 99%;
+    --muted: 340 18% 18%;
+    --muted-foreground: 340 15% 65%;
+    --accent: 340 18% 18%;
+    --accent-foreground: 340 60% 99%;
+    --border: 340 18% 22%;
+    --input: 340 18% 22%;
+    --ring: 339 58% 65%;
+    --hero-bg: 340 18% 14%;
+    --hero-foreground: 340 60% 99%;
+  }
+
+  /* === TEMA MASCULINO — azul petróleo + grafite, mais sóbrio e organizado === */
+  .theme-masc {
+    --background: 215 30% 98%;
+    --foreground: 215 30% 16%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 30% 16%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 30% 16%;
+
+    --primary: 210 68% 42%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 210 60% 94%;
+    --primary-glow: 210 70% 70%;
+    --primary-deep: 212 70% 30%;
+
+    --hero-bg: 210 45% 96%;
+    --hero-foreground: 215 30% 16%;
+
+    --secondary: 210 40% 94%;
+    --secondary-foreground: 212 60% 32%;
+
+    --muted: 215 25% 95%;
+    --muted-foreground: 215 12% 45%;
+
+    --accent: 210 45% 94%;
+    --accent-foreground: 212 60% 32%;
+
+    --success: 158 55% 34%;
+    --success-foreground: 0 0% 100%;
+    --success-soft: 158 45% 92%;
+
+    --warning: 32 85% 48%;
+    --destructive: 4 66% 52%;
+    --destructive-soft: 4 60% 95%;
+
+    --border: 215 22% 90%;
+    --input: 215 22% 90%;
+    --ring: 210 68% 42%;
+
+    /* Sombra dos ícones 3D no tema masculino (azul sóbrio) */
+    --thiing-shadow-color: 210 68% 42%;
+
+    --gradient-rose: linear-gradient(135deg, hsl(212 70% 38%), hsl(205 65% 52%));
+    --gradient-rose-soft: linear-gradient(135deg, hsl(210 55% 92%), hsl(205 60% 97%));
+    --gradient-soft: linear-gradient(180deg, hsl(215 30% 98%), hsl(210 40% 96%));
+    --gradient-hero: linear-gradient(160deg, hsl(0 0% 100%) 0%, hsl(210 45% 95%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.7), hsl(210 45% 96% / 0.5));
+
+    --shadow-card: 0 2px 12px -4px hsl(215 30% 40% / 0.1);
+    --shadow-rose: 0 8px 24px -8px hsl(210 68% 42% / 0.4);
+    --shadow-hero: 0 12px 40px -16px hsl(215 40% 40% / 0.22);
+    --shadow-glass: 0 8px 32px -8px hsl(215 35% 35% / 0.16), inset 0 1px 0 hsl(0 0% 100% / 0.6);
+  }
+}
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body, #root {
+    @apply min-h-screen;
+    min-height: var(--app-height);
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    min-height: var(--app-height);
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
+    /* fundo decorativo: blobs rosés bem suaves para o vidro ter o que refratar */
+    background-image:
+      radial-gradient(60% 40% at 10% 0%, hsl(339 80% 92% / 0.7) 0%, transparent 70%),
+      radial-gradient(50% 35% at 100% 20%, hsl(339 75% 90% / 0.55) 0%, transparent 70%),
+      radial-gradient(70% 50% at 50% 100%, hsl(339 70% 95% / 0.6) 0%, transparent 70%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /* Container responsivo: celular por padrão, mais largo em tablets/iPad */
+  .mobile-shell {
+    @apply mx-auto w-full md:max-w-[640px] lg:max-w-[720px] min-h-screen relative;
+    min-height: var(--app-height);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  /* === LIQUID GLASS === */
+  /* Vidro padrão: translúcido, fosco, brilho interno superior, borda branca sutil */
+  .glass {
+    background: var(--gradient-glass);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border: 1px solid hsl(0 0% 100% / 0.55);
+    box-shadow: var(--shadow-glass);
+  }
+
+  /* Vidro mais opaco para conteúdo principal */
+  .glass-strong {
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.85), hsl(339 70% 97% / 0.7));
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid hsl(0 0% 100% / 0.7);
+    box-shadow: var(--shadow-glass);
+  }
+
+  /* Vidro tingido de rosé — para destaques */
+  .glass-rose {
+    background: linear-gradient(135deg, hsl(339 80% 96% / 0.7), hsl(339 70% 92% / 0.5));
+    backdrop-filter: blur(24px) saturate(170%);
+    -webkit-backdrop-filter: blur(24px) saturate(170%);
+    border: 1px solid hsl(339 80% 90% / 0.6);
+    box-shadow: var(--shadow-glass);
+  }
+
+  /* Cartão hero (saldo) — agora liquid glass */
+  .card-hero {
+    @apply rounded-3xl p-6 relative overflow-hidden text-foreground;
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.75), hsl(339 70% 95% / 0.55));
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid hsl(0 0% 100% / 0.7);
+    box-shadow: var(--shadow-glass), var(--shadow-hero);
+  }
+
+  /* Brilho superior interno (efeito vidro) */
+  .card-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 50%;
+    background: linear-gradient(180deg, hsl(0 0% 100% / 0.35), transparent);
+    pointer-events: none;
+  }
+
+  /* Card padrão — vidro leve */
+  .card-soft {
+    @apply rounded-2xl p-4 relative;
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.8), hsl(339 70% 98% / 0.6));
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid hsl(0 0% 100% / 0.6);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Pills */
+  .pill-secondary {
+    @apply text-muted-foreground border border-white/60;
+    background: hsl(0 0% 100% / 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .pill-active {
+    @apply text-primary border;
+    background: hsl(339 80% 94% / 0.75);
+    border-color: hsl(339 70% 88% / 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Sombra dos ícones 3D — muda de cor conforme o tema */
+  .thiing-shadow {
+    filter: drop-shadow(0 8px 16px hsl(var(--thiing-shadow-color) / 0.18));
+  }
+
+  /* Texto rosé com brilho — substitui o antigo gold-shimmer */
+  .text-rose-shimmer {
+    background: linear-gradient(135deg, hsl(339 60% 50%), hsl(339 70% 65%) 50%, hsl(339 55% 45%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@layer utilities {
+  .font-serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+  .font-sans { font-family: 'Jost', system-ui, sans-serif; }
+
+  .gradient-rose { background: var(--gradient-rose); }
+  .gradient-rose-soft { background: var(--gradient-rose-soft); }
+  .gradient-soft { background: var(--gradient-soft); }
+  .gradient-hero { background: var(--gradient-hero); }
+
+  .shadow-rose { box-shadow: var(--shadow-rose); }
+  .shadow-hero { box-shadow: var(--shadow-hero); }
+  .shadow-sheet { box-shadow: var(--shadow-sheet); }
+  .shadow-glass { box-shadow: var(--shadow-glass); }
+
+  .safe-top { padding-top: env(safe-area-inset-top, 0px); }
+  .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 0px); }
+  .pb-safe-nav { padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px)); }
+
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+@layer components {
+  .mp-input,
+  .mp-field {
+    height: 44px;
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+    padding: 0 12px;
+    font-size: 14px;
+    color: hsl(var(--foreground));
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .mp-input:focus,
+  .mp-field:focus-within {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.12);
+  }
+  .mp-field iframe { width: 100% !important; height: 100% !important; border: 0; }
+}
+
+/* === Overrides visuais do tema masculino (vidro/pílulas/blobs) === */
+@layer base {
+  .theme-masc body {
+    background-image:
+      radial-gradient(60% 40% at 10% 0%, hsl(210 60% 92% / 0.7) 0%, transparent 70%),
+      radial-gradient(50% 35% at 100% 20%, hsl(205 55% 90% / 0.55) 0%, transparent 70%),
+      radial-gradient(70% 50% at 50% 100%, hsl(215 45% 95% / 0.6) 0%, transparent 70%);
+  }
+
+  /* === DARK + MASCULINO === */
+  .dark.theme-masc {
+    --background: 215 32% 9%;
+    --foreground: 210 40% 96%;
+
+    --card: 215 30% 13%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 215 30% 13%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 205 70% 58%;
+    --primary-foreground: 215 35% 10%;
+    --primary-soft: 212 40% 20%;
+    --primary-glow: 205 70% 68%;
+    --primary-deep: 205 70% 72%;
+
+    --hero-bg: 215 30% 13%;
+    --hero-foreground: 210 40% 96%;
+
+    --secondary: 215 26% 18%;
+    --secondary-foreground: 210 40% 96%;
+
+    --muted: 215 26% 18%;
+    --muted-foreground: 213 16% 68%;
+
+    --accent: 215 26% 18%;
+    --accent-foreground: 210 40% 96%;
+
+    --success: 158 50% 48%;
+    --success-soft: 158 30% 18%;
+    --warning: 32 85% 58%;
+    --destructive: 4 70% 60%;
+    --destructive-soft: 4 40% 20%;
+
+    --border: 215 22% 22%;
+    --input: 215 22% 22%;
+    --ring: 205 70% 58%;
+
+    --thiing-shadow-color: 205 70% 58%;
+
+    --gradient-rose: linear-gradient(135deg, hsl(212 60% 34%), hsl(205 60% 46%));
+    --gradient-rose-soft: linear-gradient(135deg, hsl(215 30% 18%), hsl(210 32% 22%));
+    --gradient-soft: linear-gradient(180deg, hsl(215 32% 9%), hsl(215 30% 13%));
+    --gradient-hero: linear-gradient(160deg, hsl(215 30% 15%) 0%, hsl(215 32% 10%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(215 30% 20% / 0.7), hsl(215 30% 14% / 0.55));
+
+    --shadow-glass: 0 8px 32px -8px hsl(215 60% 4% / 0.55), inset 0 1px 0 hsl(0 0% 100% / 0.06);
+  }
+
+  /* Fundos decorativos no escuro */
+  .dark body {
+    background-image:
+      radial-gradient(60% 40% at 10% 0%, hsl(339 45% 22% / 0.55) 0%, transparent 70%),
+      radial-gradient(50% 35% at 100% 20%, hsl(339 40% 20% / 0.45) 0%, transparent 70%),
+      radial-gradient(70% 50% at 50% 100%, hsl(339 35% 18% / 0.5) 0%, transparent 70%);
+  }
+  .dark.theme-masc body {
+    background-image:
+      radial-gradient(60% 40% at 10% 0%, hsl(210 55% 20% / 0.6) 0%, transparent 70%),
+      radial-gradient(50% 35% at 100% 20%, hsl(205 50% 18% / 0.5) 0%, transparent 70%),
+      radial-gradient(70% 50% at 50% 100%, hsl(215 45% 16% / 0.55) 0%, transparent 70%);
+  }
+}
+
+@layer components {
+  .theme-masc .glass-strong {
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.88), hsl(210 45% 97% / 0.72));
+  }
+  .theme-masc .glass-rose {
+    background: linear-gradient(135deg, hsl(210 60% 96% / 0.75), hsl(205 55% 92% / 0.55));
+    border-color: hsl(210 50% 88% / 0.7);
+  }
+  .theme-masc .card-hero {
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.8), hsl(210 50% 95% / 0.6));
+  }
+  .theme-masc .card-soft {
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.85), hsl(210 45% 98% / 0.65));
+  }
+  .theme-masc .pill-active {
+    background: hsl(210 60% 93% / 0.8);
+    border-color: hsl(210 55% 85% / 0.85);
+  }
+  .theme-masc .text-rose-shimmer {
+    background: linear-gradient(135deg, hsl(212 70% 34%), hsl(205 65% 48%) 50%, hsl(212 70% 30%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* === Vidro no modo escuro (feminino) === */
+  .dark .glass,
+  .dark .glass-strong,
+  .dark .card-hero,
+  .dark .card-soft {
+    background: linear-gradient(135deg, hsl(340 20% 20% / 0.75), hsl(340 20% 14% / 0.6));
+    border: 1px solid hsl(0 0% 100% / 0.08);
+    box-shadow: var(--shadow-glass);
+  }
+  .dark .glass-rose {
+    background: linear-gradient(135deg, hsl(339 40% 26% / 0.6), hsl(339 35% 18% / 0.5));
+    border-color: hsl(339 40% 40% / 0.35);
+  }
+  .dark .pill-secondary {
+    background: hsl(340 18% 20% / 0.6);
+    border-color: hsl(0 0% 100% / 0.08);
+  }
+  .dark .pill-active {
+    background: hsl(339 45% 30% / 0.6);
+    border-color: hsl(339 45% 45% / 0.5);
+    color: hsl(var(--primary));
+  }
+  .dark .text-rose-shimmer {
+    background: linear-gradient(135deg, hsl(339 70% 78%), hsl(339 60% 88%) 50%, hsl(339 70% 74%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* === Vidro no modo escuro (masculino) === */
+  .dark.theme-masc .glass,
+  .dark.theme-masc .glass-strong,
+  .dark.theme-masc .card-hero,
+  .dark.theme-masc .card-soft {
+    background: linear-gradient(135deg, hsl(215 28% 20% / 0.78), hsl(215 30% 13% / 0.62));
+    border: 1px solid hsl(0 0% 100% / 0.07);
+  }
+  .dark.theme-masc .glass-rose {
+    background: linear-gradient(135deg, hsl(210 45% 26% / 0.6), hsl(212 40% 18% / 0.5));
+    border-color: hsl(205 45% 45% / 0.35);
+  }
+  .dark.theme-masc .pill-active {
+    background: hsl(210 50% 28% / 0.65);
+    border-color: hsl(205 50% 45% / 0.5);
+  }
+  .dark.theme-masc .text-rose-shimmer {
+    background: linear-gradient(135deg, hsl(205 70% 70%), hsl(200 65% 82%) 50%, hsl(205 70% 66%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+

@@ -1,0 +1,8 @@
+project_id = "nxwsuodapmgbdriaqcby"
+
+[functions.mp-webhook]
+verify_jwt = false
+
+[functions.mp-public-key]
+verify_jwt = false
+

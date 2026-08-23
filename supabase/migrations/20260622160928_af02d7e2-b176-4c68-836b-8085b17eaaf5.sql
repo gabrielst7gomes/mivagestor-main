@@ -1,0 +1,1 @@
+DELETE FROM public.push_subscriptions WHERE user_id = 'a7897fbc-1ca8-4586-84e9-9da386eead54';
