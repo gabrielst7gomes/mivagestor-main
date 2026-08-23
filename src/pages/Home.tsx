@@ -2,8 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
-import { Bell, ChevronRight, TrendingUp, TrendingDown, Hourglass } from "lucide-react";
-import { saudacao, mesAtual, intervaloMesAtual, formatBRL, formatDataLonga, iniciais, nomeAbreviado } from "@/lib/finance";
+import { Bell, ChevronRight, ChevronLeft, TrendingUp, TrendingDown, Hourglass } from "lucide-react";
+import { saudacao, nomeMes, intervaloMes, formatBRL, formatDataLonga, iniciais, nomeAbreviado } from "@/lib/finance";
 import { Progress } from "@/components/ui/progress";
 import { ThiingIcon } from "@/components/ThiingIcon";
 import { useCategorias } from "@/hooks/useCategorias";
@@ -25,6 +25,9 @@ interface Receita { id: string; valor: number; tipo: string; }
 export default function Home() {
   const { user } = useAuth();
   const { findByNome } = useCategorias("conta");
+  const hoje = new Date();
+  const [ano, setAno] = useState(hoje.getFullYear());
+  const [mes, setMes] = useState(hoje.getMonth() + 1); // 1-12
   const [nome, setNome] = useState("");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [contas, setContas] = useState<Conta[]>([]);
@@ -33,7 +36,8 @@ export default function Home() {
 
   const carregar = useCallback(async () => {
     if (!user) return;
-    const { inicio, fim, ano, mes } = intervaloMesAtual();
+    setLoading(true);
+    const { inicio, fim } = intervaloMes(ano, mes);
 
     // Replicar contas recorrentes para este mês (idempotente)
     await supabase.rpc("replicar_recorrentes", { _user_id: user.id, _ano: ano, _mes: mes });
@@ -48,9 +52,22 @@ export default function Home() {
     setContas((c ?? []) as Conta[]);
     setReceitas((r ?? []) as Receita[]);
     setLoading(false);
-  }, [user]);
+  }, [user, ano, mes]);
 
   useEffect(() => { carregar(); }, [carregar]);
+
+  const mudarMes = (delta: number) => {
+    const d = new Date(ano, mes - 1 + delta, 1);
+    setAno(d.getFullYear());
+    setMes(d.getMonth() + 1);
+  };
+
+  const irHoje = () => {
+    setAno(hoje.getFullYear());
+    setMes(hoje.getMonth() + 1);
+  };
+
+  const ehMesAtual = ano === hoje.getFullYear() && mes === hoje.getMonth() + 1;
 
   const totalReceitas = receitas.reduce((a, r) => a + Number(r.valor), 0);
   const totalSalario = receitas.filter((r) => r.tipo === "salario").reduce((a, r) => a + Number(r.valor), 0);
@@ -106,13 +123,39 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Seletor de mês */}
+          <div className="card-soft mb-4 flex items-center justify-between gap-2 py-3 px-3">
+            <button
+              onClick={() => mudarMes(-1)}
+              aria-label="Mês anterior"
+              className="w-9 h-9 rounded-full bg-primary-soft/60 text-primary flex items-center justify-center hover:bg-primary-soft transition-colors active:scale-95"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <div className="flex-1 text-center">
+              <p className="font-serif text-base text-foreground capitalize leading-tight">{nomeMes(ano, mes)}</p>
+              {!ehMesAtual && (
+                <button onClick={irHoje} className="text-[11px] text-primary font-medium mt-0.5 underline-offset-2 hover:underline">
+                  voltar para hoje
+                </button>
+              )}
+            </div>
+            <button
+              onClick={() => mudarMes(1)}
+              aria-label="Próximo mês"
+              className="w-9 h-9 rounded-full bg-primary-soft/60 text-primary flex items-center justify-center hover:bg-primary-soft transition-colors active:scale-95"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+
           {/* Cartão saldo — liquid glass + cofrinho 3D */}
           <div className="card-hero mb-5 animate-scale-in">
             {/* Cofrinho decorativo no canto */}
             <ThiingIcon name="piggy" size="lg" float className="absolute -top-4 -right-2 z-10" />
 
             <p className="text-muted-foreground text-xs uppercase tracking-wider mb-1 relative">Saldo disponível em</p>
-            <p className="text-foreground/70 text-sm capitalize mb-3 relative">{mesAtual()}</p>
+            <p className="text-foreground/70 text-sm capitalize mb-3 relative">{nomeMes(ano, mes)}</p>
             <p className="font-serif text-4xl font-semibold text-rose-shimmer relative">{formatBRL(saldo)}</p>
 
             <div className="grid grid-cols-3 gap-2 mt-6 pt-5 border-t border-white/60 relative">
