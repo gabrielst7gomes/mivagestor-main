@@ -1,18 +1,18 @@
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { tabs } from "./nav-items";
+import { useScrollingDown } from "@/hooks/useScrollDirection";
 
 export function BottomNav() {
+  const hidden = useScrollingDown();
+
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-1/2 -translate-x-1/2 w-full safe-bottom z-40 border-t border-white/60"
-      style={{
-        bottom: "env(safe-area-inset-bottom, 0px)",
-        background: "linear-gradient(180deg, hsl(0 0% 100% / 0.7), hsl(339 70% 97% / 0.85))",
-        backdropFilter: "blur(24px) saturate(180%)",
-        WebkitBackdropFilter: "blur(24px) saturate(180%)",
-        boxShadow: "0 -4px 24px -8px hsl(339 40% 50% / 0.12)",
-      }}
+      className={cn(
+        "glass-strong md:hidden fixed bottom-0 left-1/2 -translate-x-1/2 w-full safe-bottom z-40 transition-transform duration-300",
+        hidden ? "translate-y-full" : "translate-y-0"
+      )}
+      style={{ bottom: "env(safe-area-inset-bottom, 0px)" }}
     >
       <ul className="grid grid-cols-6">
         {tabs.map(({ to, label, icon: Icon, end }) => (
