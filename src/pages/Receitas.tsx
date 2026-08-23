@@ -150,7 +150,7 @@ export default function Receitas() {
       <button
         onClick={() => setOpen(true)}
         aria-label="Adicionar receita"
-        className="fixed bottom-24 right-[calc(50%-198px)] md:right-[calc(50%-308px)] lg:right-[calc(50%-348px)] w-14 h-14 rounded-full gradient-rose text-primary-foreground shadow-rose flex items-center justify-center z-30 hover:scale-105 transition-transform"
+        className="fixed bottom-24 right-[calc(50%-198px)] md:bottom-8 md:right-8 w-14 h-14 rounded-full gradient-rose text-primary-foreground shadow-rose flex items-center justify-center z-30 hover:scale-105 transition-transform"
       >
         <Plus size={26} />
       </button>

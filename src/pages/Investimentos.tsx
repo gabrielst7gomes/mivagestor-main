@@ -196,7 +196,7 @@ export default function Investimentos() {
       <button
         onClick={() => setNovaOpen(true)}
         aria-label="Nova reserva"
-        className="fixed bottom-24 right-[calc(50%-198px)] md:right-[calc(50%-308px)] lg:right-[calc(50%-348px)] w-14 h-14 rounded-full gradient-rose text-primary-foreground shadow-rose flex items-center justify-center z-30 hover:scale-105 transition-transform"
+        className="fixed bottom-24 right-[calc(50%-198px)] md:bottom-8 md:right-8 w-14 h-14 rounded-full gradient-rose text-primary-foreground shadow-rose flex items-center justify-center z-30 hover:scale-105 transition-transform"
       >
         <Plus size={26} />
       </button>
