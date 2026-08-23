@@ -7,7 +7,7 @@ import webpush from "npm:web-push@3.6.7";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const VAPID_PUBLIC = "BPrmlXuvI39iAjZrqAOGqE29jvusKSvVBlxLyFI7_D-W0C7Ui0m5OJAhs8OEWWgMxMf-_EpwQGDOkH-LJJwoKSk";
+const VAPID_PUBLIC = "BCDrCJNdpFpjre6xtiJX_HGQBhyvs9huZZzcWf1JEN8a-MiO6FhpjqwJG4q76kI2xtrXCbrRuUG6PpVQ2J53_5A";
 const VAPID_PRIVATE = (Deno.env.get("VAPID_PRIVATE_KEY") || "")
   .trim()
   .replace(/^["'<]+|["'>]+$/g, "")
