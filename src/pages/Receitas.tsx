@@ -2,8 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
-import { mesAtual, intervaloMesAtual, formatBRL, formatDataLonga } from "@/lib/finance";
-import { Plus } from "lucide-react";
+import { nomeMes, intervaloMes, formatBRL, formatDataLonga } from "@/lib/finance";
+import { Plus, ChevronLeft, ChevronRight } from "lucide-react";
 import { NovaReceitaSheet } from "@/components/NovaReceitaSheet";
 import { EditarReceitaSheet, type EditavelReceita } from "@/components/EditarReceitaSheet";
 import { ThiingIcon } from "@/components/ThiingIcon";
@@ -21,6 +21,9 @@ interface Receita {
 export default function Receitas() {
   const { user } = useAuth();
   const { findByNome } = useCategorias("receita");
+  const hoje = new Date();
+  const [ano, setAno] = useState(hoje.getFullYear());
+  const [mes, setMes] = useState(hoje.getMonth() + 1); // 1-12
   const [receitas, setReceitas] = useState<Receita[]>([]);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<EditavelReceita | null>(null);
@@ -28,7 +31,8 @@ export default function Receitas() {
 
   const carregar = useCallback(async () => {
     if (!user) return;
-    const { inicio, fim } = intervaloMesAtual();
+    setLoading(true);
+    const { inicio, fim } = intervaloMes(ano, mes);
     const { data } = await supabase
       .from("receitas")
       .select("*")
@@ -38,9 +42,22 @@ export default function Receitas() {
       .order("data_recebimento", { ascending: false });
     setReceitas((data ?? []) as Receita[]);
     setLoading(false);
-  }, [user]);
+  }, [user, ano, mes]);
 
   useEffect(() => { carregar(); }, [carregar]);
+
+  const mudarMes = (delta: number) => {
+    const d = new Date(ano, mes - 1 + delta, 1);
+    setAno(d.getFullYear());
+    setMes(d.getMonth() + 1);
+  };
+
+  const irHoje = () => {
+    setAno(hoje.getFullYear());
+    setMes(hoje.getMonth() + 1);
+  };
+
+  const ehMesAtual = ano === hoje.getFullYear() && mes === hoje.getMonth() + 1;
 
   const total = receitas.reduce((a, r) => a + Number(r.valor), 0);
 
@@ -50,16 +67,42 @@ export default function Receitas() {
         <header className="mb-5 flex items-start justify-between gap-3">
           <div>
             <h1 className="font-serif text-3xl text-foreground">Minhas Receitas</h1>
-            <p className="text-sm text-muted-foreground capitalize">{mesAtual()}</p>
+            <p className="text-sm text-muted-foreground capitalize">{nomeMes(ano, mes)}</p>
           </div>
           <ThiingIcon name="coins" size="lg" float />
         </header>
+
+        {/* Seletor de mês */}
+        <div className="card-soft mb-4 flex items-center justify-between gap-2 py-3 px-3">
+          <button
+            onClick={() => mudarMes(-1)}
+            aria-label="Mês anterior"
+            className="w-9 h-9 rounded-full bg-primary-soft/60 text-primary flex items-center justify-center hover:bg-primary-soft transition-colors active:scale-95"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <div className="flex-1 text-center">
+            <p className="font-serif text-base text-foreground capitalize leading-tight">{nomeMes(ano, mes)}</p>
+            {!ehMesAtual && (
+              <button onClick={irHoje} className="text-[11px] text-primary font-medium mt-0.5 underline-offset-2 hover:underline">
+                voltar para hoje
+              </button>
+            )}
+          </div>
+          <button
+            onClick={() => mudarMes(1)}
+            aria-label="Próximo mês"
+            className="w-9 h-9 rounded-full bg-primary-soft/60 text-primary flex items-center justify-center hover:bg-primary-soft transition-colors active:scale-95"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
 
         {/* Card total — liquid glass */}
         <div className="card-hero mb-6 animate-scale-in">
           <p className="text-muted-foreground text-xs uppercase tracking-wider mb-2 relative">Total recebido</p>
           <p className="font-serif text-4xl font-semibold text-rose-shimmer relative">{formatBRL(total)}</p>
-          <p className="text-muted-foreground text-xs mt-2 capitalize relative">{mesAtual()}</p>
+          <p className="text-muted-foreground text-xs mt-2 capitalize relative">{nomeMes(ano, mes)}</p>
         </div>
 
         <div className="space-y-2">
